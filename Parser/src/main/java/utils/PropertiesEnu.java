@@ -2,7 +2,8 @@ package utils;
 
 public enum PropertiesEnu {
 	
-	INPUT_DIR("input.dir");
+	INPUT_DIR("input.dir"),
+	REGEX_DIR("regex.dir");
 	
 	private String prop;
 	

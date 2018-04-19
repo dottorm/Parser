@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class PropertiesManager {
 	
-	private String propFileName = "C:/Users/mparrillo2/appo/parser/parser.properties";
+	private String propFileName = "conf/parser.properties";
 	
 	private Properties prop = new Properties();
 	
