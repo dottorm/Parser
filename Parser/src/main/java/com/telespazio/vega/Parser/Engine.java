@@ -3,7 +3,12 @@ package com.telespazio.vega.Parser;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.telespazio.vega.Parser.core.DirectoryWalker;
+import com.telespazio.vega.Parser.core.ManifestParser;
 
 import utils.FileNameUtils;
 import utils.PropertiesEnu;
@@ -22,6 +27,7 @@ public class Engine {
 	
 	public void checkInputFolder(File directory){
 		File[] inputFolder = reader.listFilesForFolder(directory);
+		File manifest = null;
 		
 		for(File dir : inputFolder){
 			
@@ -35,8 +41,10 @@ public class Engine {
 				return;
 			}
 			
+			
 			try {
-				if(FileNameUtils.renameFile(dir) == null){
+				dir = FileNameUtils.renameFile(dir);
+				if(dir == null){
 					System.out.println("Impossible to rename: "+dir.getName());
 					return;
 				}
@@ -44,7 +52,19 @@ public class Engine {
 				System.err.println(e.getMessage());
 			}
 			
-			
+			manifest = reader.manifestExists(reader.readContent(dir));
+			try {
+				ManifestParser man = new ManifestParser(manifest);
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

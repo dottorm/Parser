@@ -33,9 +33,9 @@ public class FileNameUtils {
 			return null;
 		}
 		
-		System.out.println("Succesfully renamed: "+input.getName());
+		System.out.println("Succesfully renamed: "+renamed.getName());
 		
-		return input;
+		return renamed;
 		
 	}
 	

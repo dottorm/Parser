@@ -58,14 +58,14 @@ public class DirectoryWalker {
 		
 	}
 	
-	private File[] readContent(File directory){
+	public File[] readContent(File directory){
 		if(directory == null)
 			return null;
 		
 		return directory.listFiles();
 	}
 	
-	private File manifestExists(File[] directory){
+	public File manifestExists(File[] directory){
 		
 		if(directory == null || directory.length == 0)
 			return null;
