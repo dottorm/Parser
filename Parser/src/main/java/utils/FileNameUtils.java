@@ -20,9 +20,7 @@ public class FileNameUtils {
 	}
 	
 	public static File renameFile(File input) throws IOException{
-		
-		System.out.println("Renaming: "+input.getName());
-		
+				
 		File renamed = new File(input.getAbsolutePath()+INPROGRESS);
 		
 		if(renamed.exists()){
@@ -32,8 +30,6 @@ public class FileNameUtils {
 		if(!input.renameTo(renamed)){
 			return null;
 		}
-		
-		System.out.println("Succesfully renamed: "+renamed.getName());
 		
 		return renamed;
 		

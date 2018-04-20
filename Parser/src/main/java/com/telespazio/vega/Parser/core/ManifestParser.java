@@ -26,7 +26,7 @@ public class ManifestParser {
 		
 		manager = new XmlManager(manifest);
 		
-		try {
+		/*try {
 			System.out.println(getTime("startTime"));
 			System.out.println(getTime("stopTime"));
 			System.out.println(getProductInformation("productType"));
@@ -40,7 +40,7 @@ public class ManifestParser {
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public String getPlatform() throws XPathExpressionException{
@@ -65,6 +65,8 @@ public class ManifestParser {
 		return result;
 	}
 	
+	
+	//TODO: TO BE IMPROVED!!
 	public List<DataObject> getObjects() throws XPathExpressionException{
 		manager.setExpr(manager.compileXpath(XPathCommands.GET_OBJECTS_LIST));
 		NodeList result = (NodeList) manager.getExpr().evaluate(manager.getDoc(), XPathConstants.NODESET);
@@ -107,8 +109,6 @@ public class ManifestParser {
 					
 				}
 			}
-			
-			System.out.println(dataOject.toString());
 			objectyList.add(dataOject);
 		}
 		
