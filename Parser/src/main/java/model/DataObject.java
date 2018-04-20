@@ -4,11 +4,14 @@ public class DataObject {
 	
 	private String name;
 	private String checkSum;
+	private String size;
 	
 	public DataObject(String name, String checkSum){
 		this.name = name;
 		this.checkSum = checkSum;
 	}
+
+	public DataObject() {}
 
 	public String getName() {
 		return name;
@@ -26,9 +29,17 @@ public class DataObject {
 		this.checkSum = checkSum;
 	}
 
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("DataObject [name=%s, checkSum=%s]", name, checkSum);
+		return String.format("DataObject [name=%s, checkSum=%s, size=%s]", name, checkSum, size);
 	}
 
 	@Override
@@ -37,6 +48,7 @@ public class DataObject {
 		int result = 1;
 		result = prime * result + ((checkSum == null) ? 0 : checkSum.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((size == null) ? 0 : size.hashCode());
 		return result;
 	}
 
@@ -58,6 +70,11 @@ public class DataObject {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (size == null) {
+			if (other.size != null)
+				return false;
+		} else if (!size.equals(other.size))
 			return false;
 		return true;
 	}

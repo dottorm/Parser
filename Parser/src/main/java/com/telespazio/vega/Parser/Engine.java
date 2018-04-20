@@ -3,13 +3,12 @@ package com.telespazio.vega.Parser;
 import java.io.File;
 import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.telespazio.vega.Parser.core.DirectoryWalker;
+import com.telespazio.vega.Parser.core.FileNameReader;
 import com.telespazio.vega.Parser.core.ManifestParser;
+import com.telespazio.vega.Parser.core.RegexMap;
 
+import utils.CheckName;
 import utils.FileNameUtils;
 import utils.PropertiesEnu;
 import utils.PropertiesManager;
@@ -28,6 +27,8 @@ public class Engine {
 	public void checkInputFolder(File directory){
 		File[] inputFolder = reader.listFilesForFolder(directory);
 		File manifest = null;
+		String type;
+		String pattern;
 		
 		for(File dir : inputFolder){
 			
@@ -41,11 +42,18 @@ public class Engine {
 				return;
 			}
 			
+			type = FileNameReader.getType(dir.getName());
+			pattern = RegexMap.REGEX.get(type);
+			
+			if(!CheckName.chekName(dir.getName(), pattern)){
+				System.out.println("File Name not compliant");
+				return;
+			}
 			
 			try {
 				dir = FileNameUtils.renameFile(dir);
 				if(dir == null){
-					System.out.println("Impossible to rename: "+dir.getName());
+					System.out.println("Impossible to rename directory");
 					return;
 				}
 			} catch (IOException e) {
@@ -55,16 +63,10 @@ public class Engine {
 			manifest = reader.manifestExists(reader.readContent(dir));
 			try {
 				ManifestParser man = new ManifestParser(manifest);
-			} catch (ParserConfigurationException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} 
 		}
 	}
 

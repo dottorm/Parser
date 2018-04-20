@@ -1,9 +1,6 @@
 package com.telespazio.vega.Parser;
 
 import com.telespazio.vega.Parser.core.LoadRegex;
-import com.telespazio.vega.Parser.core.RegexMap;
-
-import utils.CheckName;
 
 public class Main {
 

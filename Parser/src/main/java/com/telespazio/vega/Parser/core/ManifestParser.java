@@ -2,6 +2,8 @@ package com.telespazio.vega.Parser.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
@@ -9,8 +11,10 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import model.DataObject;
 import utils.CheckName;
 import utils.XPathCommands;
 
@@ -32,6 +36,7 @@ public class ManifestParser {
 			System.out.println(getProductInformation("creationTime"));
 			System.out.println(getPlatform());
 			System.out.println(getOrbit());
+			getObjects();
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,6 +63,57 @@ public class ManifestParser {
 		result = CheckName.checkPlatform(result);
 		
 		return result;
+	}
+	
+	public List<DataObject> getObjects() throws XPathExpressionException{
+		manager.setExpr(manager.compileXpath(XPathCommands.GET_OBJECTS_LIST));
+		NodeList result = (NodeList) manager.getExpr().evaluate(manager.getDoc(), XPathConstants.NODESET);
+		
+		Node node;
+		Element ele;
+		DataObject dataOject;
+		
+		List<DataObject> objectyList = new ArrayList<DataObject>();
+		
+		for(int i = 0; i<result.getLength(); i++){
+			dataOject = new DataObject();
+			node = result.item(i);
+			
+			if(!node.hasChildNodes()){continue;}
+			
+			NodeList nodes = node.getChildNodes();
+			for(int j=0; j< nodes.getLength(); j++){
+				if(!nodes.item(j).getNodeName().equals("byteStream")){
+					continue;
+				}
+				node = nodes.item(j);
+				ele = (Element) node;
+				dataOject.setSize(ele.getAttribute("size"));
+				
+				if(!node.hasChildNodes()){continue;}
+				
+				NodeList nodesl = node.getChildNodes();
+				Node n;
+				Element e;
+				for(int k=0; k< nodesl.getLength(); k++){
+					if(nodesl.item(k).getNodeName().equals("fileLocation")){
+						n = nodesl.item(k);
+						e = (Element) n;
+						dataOject.setName(e.getAttribute("href"));
+					}
+					if(nodesl.item(k).getNodeName().equals("checksum")){
+						dataOject.setCheckSum(nodesl.item(k).getTextContent());
+					}
+					
+				}
+			}
+			
+			System.out.println(dataOject.toString());
+			objectyList.add(dataOject);
+		}
+		
+		return objectyList;
+		
 	}
 	
 	public String getOrbit() throws XPathExpressionException{
