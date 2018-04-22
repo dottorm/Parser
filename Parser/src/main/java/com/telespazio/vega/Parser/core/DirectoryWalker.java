@@ -1,15 +1,9 @@
 package com.telespazio.vega.Parser.core;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import utils.FileNameUtils;
-import utils.PropertiesEnu;
-import utils.PropertiesManager;
+import model.DataObject;
 
 public class DirectoryWalker {
 	
@@ -17,6 +11,27 @@ public class DirectoryWalker {
 	
 	
 	public DirectoryWalker(){}
+	
+	public File[] readDataObject(final File folder, List<DataObject> dataList){
+		
+		File[] toCheck = new File[dataList.size()];
+		
+		boolean found = false;
+		
+		for(int i = 0; i<dataList.size(); i++){
+			for(File f : listFilesForFolder(folder)){
+				if(dataList.get(i).getName().equals(f.getName())){
+					toCheck[i] = f;
+					found = true;
+				}
+			}
+			if(!found){
+				System.out.println("File: "+dataList.get(i).getName()+"NOT FOUND!");
+			}
+		}
+		
+		return toCheck;
+	}
 	
 	public File[] listFilesForFolder(final File folder) {
 		

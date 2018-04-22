@@ -42,7 +42,7 @@ public class Engine {
 				return;
 			}
 			
-			if (!FileNameUtils.isValidName(dir.getName())){
+			if (!FileNameUtils.isValid(dir.getName())){
 				System.out.println("Input not correct: "+dir.getName());
 				return;
 			}
@@ -54,6 +54,7 @@ public class Engine {
 				System.out.println("File Name not compliant");
 				return;
 			}
+			
 			System.out.println("Checking: "+dir.getName());
 			try {
 				dir = FileNameUtils.renameFile(dir);
@@ -65,7 +66,13 @@ public class Engine {
 				System.err.println(e.getMessage());
 			}
 			
+			//Reading Manifest
 			manifest = reader.manifestExists(reader.readContent(dir));
+			
+			if(manifest == null){
+				System.out.println("Product Not valid no Manifest to Parse");
+				return;
+			}
 			ManifestParser man = null;
 			try {
 				man = new ManifestParser(manifest);
@@ -85,7 +92,7 @@ public class Engine {
 				return;
 			}
 			
-			File[] filesList = reader.listFilesForFolder(dir);
+			File[] filesList = reader.readDataObject(dir, objectList);
 			
 			if(filesList == null || filesList.length == 0){
 				System.out.println("Empty dir impossible to elaborate");

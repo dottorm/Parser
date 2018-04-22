@@ -8,7 +8,7 @@ public class FileNameUtils {
 	private static final String INPROGRESS = ".inProgess";
 	private static final String EXT = ".SEN3";
 	
-	public static boolean isValidName(String name){
+	public static boolean isValid(String name){
 		
 		String extension = getExtension(name);
 		
