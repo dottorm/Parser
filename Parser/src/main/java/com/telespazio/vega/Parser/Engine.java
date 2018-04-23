@@ -10,6 +10,7 @@ import com.telespazio.vega.Parser.core.Analyzer;
 import com.telespazio.vega.Parser.core.DirectoryWalker;
 import com.telespazio.vega.Parser.core.FileNameReader;
 import com.telespazio.vega.Parser.core.ManifestParser;
+import com.telespazio.vega.Parser.core.ModelCreator;
 import com.telespazio.vega.Parser.core.RegexMap;
 
 import model.DataObject;
@@ -54,6 +55,8 @@ public class Engine {
 				System.out.println("File Name not compliant");
 				return;
 			}
+			
+			System.out.println(FileNameReader.nameReader(dir.getName()));
 			
 			System.out.println("Checking: "+dir.getName());
 			try {
@@ -101,6 +104,8 @@ public class Engine {
 			
 			System.out.println(Analyzer.checkDataObjects(filesList,objectList));
 			
+			
+			System.out.println(ModelCreator.createManifest(manifest).toString());
 			
 		}
 	}

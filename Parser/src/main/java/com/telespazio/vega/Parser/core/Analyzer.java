@@ -9,7 +9,7 @@ import utils.CheckSum;
 public class Analyzer {
 	
 	public static String checkDataObjects(File[] filesList, List<DataObject> objectList){
-		
+		String result = "";
 		boolean isName = false;
 		boolean isChecksum = false;
 		boolean isSize = false;
@@ -26,13 +26,13 @@ public class Analyzer {
 					isName = true;
 					if(CheckSum.calculateMD5(f).equals(data.getCheckSum())){isChecksum = true;}
 					if(new Long(f.length()).equals( Long.parseLong(data.getSize()))){isSize = true;}
-					System.out.println(String.format("\r\tFile Name: %s \r\tChecksum match: %s \r\tSize match: %s",isName, isChecksum, isSize));
+					result = String.format("\r\tFile Name: %s \r\tChecksum match: %s \r\tSize match: %s",isName, isChecksum, isSize);
 				}
 				
 			}
+			result = result +"\r"+result;
 			
 		}
-		String result = String.format("\r\tFile Name: %s \r\tChecksum match: %s \r\tSize match: %s",isName, isChecksum, isSize);
 		return result;
 		
 	}

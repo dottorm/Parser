@@ -34,13 +34,36 @@ public class ManifestParser {
 			System.out.println(getProductInformation("timeliness"));
 			System.out.println(getProductInformation("baselineCollection"));
 			System.out.println(getProductInformation("creationTime"));
+			System.out.println(getProductInformation("packetCount"));
 			System.out.println(getPlatform());
 			System.out.println(getOrbit());
 			getObjects();
+			System.out.println(getSurface());
+			System.out.println(getCycleNumber());
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+	}
+	
+	public String getSurface() throws XPathExpressionException{
+		manager.setExpr(manager.compileXpath(XPathCommands.GET_SURFACE));
+		Node node = (Node) manager.getExpr().evaluate(manager.getDoc(), XPathConstants.NODE);
+		if(node == null){
+			return null;
+		}
+		
+		Element ele = (Element) node;
+		
+		String result = ele.getAttribute("name");
+		
+		if(result == null){
+			return null;
+		}
+		
+		result = result.substring(result.lastIndexOf("[")+1,result.length()-1);
+		
+		return result;
 	}
 	
 	public String getPlatform() throws XPathExpressionException{
@@ -114,6 +137,14 @@ public class ManifestParser {
 		
 		return objectyList;
 		
+	}
+	
+	public String getCycleNumber() throws XPathExpressionException{
+		
+		manager.setExpr(manager.compileXpath(XPathCommands.GET_CYCLE_NUMBER));
+		String result = (String) manager.getExpr().evaluate(manager.getDoc(), XPathConstants.STRING);
+		
+		return result;
 	}
 	
 	public String getOrbit() throws XPathExpressionException{

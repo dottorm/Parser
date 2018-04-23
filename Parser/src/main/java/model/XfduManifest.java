@@ -16,6 +16,7 @@ public class XfduManifest {
 	private String timeliness;
 	private String orbit;
 	private String fullName;
+	private String packetCount;
 	
 	private DataObject[] dataObjects;
 	
@@ -130,6 +131,14 @@ public class XfduManifest {
 		this.dataObjects = dataObjects;
 	}
 
+	public String getPacketCount() {
+		return packetCount;
+	}
+
+	public void setPacketCount(String packetCount) {
+		this.packetCount = packetCount;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -141,6 +150,7 @@ public class XfduManifest {
 		result = prime * result + ((genTime == null) ? 0 : genTime.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((orbit == null) ? 0 : orbit.hashCode());
+		result = prime * result + ((packetCount == null) ? 0 : packetCount.hashCode());
 		result = prime * result + ((platform == null) ? 0 : platform.hashCode());
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((stopTime == null) ? 0 : stopTime.hashCode());
@@ -191,6 +201,11 @@ public class XfduManifest {
 				return false;
 		} else if (!orbit.equals(other.orbit))
 			return false;
+		if (packetCount == null) {
+			if (other.packetCount != null)
+				return false;
+		} else if (!packetCount.equals(other.packetCount))
+			return false;
 		if (platform == null) {
 			if (other.platform != null)
 				return false;
@@ -227,9 +242,9 @@ public class XfduManifest {
 	@Override
 	public String toString() {
 		return String.format(
-				"XfduManifest [name=%s, type=%s, startTime=%s, stopTime=%s, genTime=%s, surface=%s, platform=%s, baseLine=%s, cycle=%s, timeliness=%s, orbit=%s, fullName=%s, dataObjects=%s]",
+				"XfduManifest [name=%s, type=%s, startTime=%s, stopTime=%s, genTime=%s, surface=%s, platform=%s, baseLine=%s, cycle=%s, timeliness=%s, orbit=%s, fullName=%s, packetCount=%s, dataObjects=%s]",
 				name, type, startTime, stopTime, genTime, surface, platform, baseLine, cycle, timeliness, orbit,
-				fullName, Arrays.toString(dataObjects));
+				fullName, packetCount, Arrays.toString(dataObjects));
 	}
 
 }
