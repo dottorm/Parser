@@ -4,7 +4,7 @@ public class DataObject {
 	
 	private String name;
 	private String checkSum;
-	private String size;
+	private Long size;
 	
 	public DataObject(String name, String checkSum){
 		this.name = name;
@@ -29,11 +29,11 @@ public class DataObject {
 		this.checkSum = checkSum;
 	}
 
-	public String getSize() {
+	public Long getSize() {
 		return size;
 	}
 
-	public void setSize(String size) {
+	public void setSize(Long size) {
 		this.size = size;
 	}
 

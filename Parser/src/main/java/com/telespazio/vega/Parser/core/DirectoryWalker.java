@@ -1,9 +1,11 @@
 package com.telespazio.vega.Parser.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.DataObject;
+import utils.CheckSum;
 
 public class DirectoryWalker {
 	
@@ -12,16 +14,22 @@ public class DirectoryWalker {
 	
 	public DirectoryWalker(){}
 	
-	public File[] readDataObject(final File folder, List<DataObject> dataList){
+	public List<DataObject> readDataObject(final File folder, List<DataObject> dataList){
 		
-		File[] toCheck = new File[dataList.size()];
+		List<DataObject> toCheck = new ArrayList<>(dataList.size());
+		
+		DataObject dataObject;
 		
 		boolean found = false;
 		
 		for(int i = 0; i<dataList.size(); i++){
 			for(File f : listFilesForFolder(folder)){
 				if(dataList.get(i).getName().equals(f.getName())){
-					toCheck[i] = f;
+					dataObject = new DataObject();
+					dataObject.setName(dataList.get(i).getName());
+					dataObject.setCheckSum(CheckSum.calculateMD5(f));
+					dataObject.setSize(f.length());
+					toCheck.add(dataObject);
 					found = true;
 				}
 			}

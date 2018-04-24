@@ -1,32 +1,39 @@
 package com.telespazio.vega.Parser.core;
 
-import java.io.File;
 import java.util.List;
 
 import model.DataObject;
-import utils.CheckSum;
+import utils.Messages;
 
 public class Analyzer {
 	
-	public static String checkDataObjects(File[] filesList, List<DataObject> objectList){
+	public static String checkDataObjects(List<DataObject> filesList, List<DataObject> objectList){
 		String result = "";
-		boolean isName = false;
-		boolean isChecksum = false;
-		boolean isSize = false;
-		for(File f : filesList){
+		
+		String name = Messages.ERROR.getMessage();
+		String checkSum = Messages.ERROR.getMessage();
+		String size = Messages.ERROR.getMessage();
+		
+		for(DataObject f : filesList){
 			
 			for(DataObject data : objectList){
 				
-				isName = false;
-				isChecksum = false;
-				isSize = false;
-				
 				if(f.getName().equals(data.getName())){
 					System.out.println(f.getName()+" - "+data.getName());
-					isName = true;
-					if(CheckSum.calculateMD5(f).equals(data.getCheckSum())){isChecksum = true;}
-					if(new Long(f.length()).equals( Long.parseLong(data.getSize()))){isSize = true;}
-					result = String.format("\r\tFile Name: %s \r\tChecksum match: %s \r\tSize match: %s",isName, isChecksum, isSize);
+					name = Messages.OK.getMessage();
+					
+					if(f.getCheckSum().equals(data.getCheckSum())){
+						checkSum = Messages.OK.getMessage();
+						
+					}
+					
+					if(f.getSize().equals(data.getSize())){
+						size = Messages.OK.getMessage();
+						
+					}
+					
+					result = String.format("File Name: \r\t%s \r", f.getName());
+					result = String.format("%s \r\tFile Name: %s \r\tChecksum match: %s \r\tSize match: %s \r",result, name, checkSum,size);
 				}
 				
 			}

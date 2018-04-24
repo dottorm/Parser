@@ -11,7 +11,7 @@ public class Adf extends Element {
 	@Override
 	public String toString() {
 		return String.format(
-				"Adf [getName()=%s, getType()=%s, getStartTime()=%s, getStopTime()=%s, getGenTime()=%s, getSurface()=%s, getPlatform()=%s, getBaseLine()=%s, getCycle()=%s, getTimeliness()=%s, getOrbit()=%s, getFullName()=%s, getPacketCount()=%s]",
+				"Adf [Name=%s, Type=%s, StartTime=%s, StopTime=%s, GenTime=%s, Surface=%s, Platform=%s, BaseLine=%s, Cycle=%s, Timeliness=%s, Orbit=%s, FullName=%s, PacketCount=%s]",
 				getName(), getType(), getStartTime(), getStopTime(), getGenTime(), getSurface(), getPlatform(),
 				getBaseLine(), getCycle(), getTimeliness(), getOrbit(), getFullName(), getPacketCount());
 	}

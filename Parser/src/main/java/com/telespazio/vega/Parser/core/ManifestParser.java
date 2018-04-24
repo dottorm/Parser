@@ -113,7 +113,7 @@ public class ManifestParser {
 				}
 				node = nodes.item(j);
 				ele = (Element) node;
-				dataOject.setSize(ele.getAttribute("size"));
+				dataOject.setSize(new Long(ele.getAttribute("size")));
 				
 				if(!node.hasChildNodes()){continue;}
 				
@@ -143,6 +143,10 @@ public class ManifestParser {
 		
 		manager.setExpr(manager.compileXpath(XPathCommands.GET_CYCLE_NUMBER));
 		String result = (String) manager.getExpr().evaluate(manager.getDoc(), XPathConstants.STRING);
+		
+		if(result != null && result.length()==2){
+			result = "0"+result;
+		}
 		
 		return result;
 	}

@@ -1,8 +1,9 @@
 package com.telespazio.vega.Parser.core;
 
+import java.util.List;
 import java.io.File;
-import java.lang.reflect.Array;
 
+import model.Adf;
 import model.DataObject;
 import model.XfduManifest;
 
@@ -22,13 +23,14 @@ public class ModelCreator {
 			xfduManifest.setStartTime(parser.getTime("startTime"));
 			xfduManifest.setStopTime(parser.getTime("stopTime"));
 			xfduManifest.setType(parser.getProductInformation("productType"));
-			xfduManifest.setName(parser.getProductInformation("productName"));
+			xfduManifest.setFullName(parser.getProductInformation("productName"));
+			xfduManifest.setName(xfduManifest.getFullName().substring(0,3));
 			xfduManifest.setTimeliness(parser.getProductInformation("timeliness"));
 			xfduManifest.setBaseLine(parser.getProductInformation("baselineCollection"));
 			xfduManifest.setGenTime(parser.getProductInformation("creationTime"));
 			xfduManifest.setPlatform(parser.getPlatform());
 			xfduManifest.setOrbit(parser.getOrbit());
-			xfduManifest.setDataObjects(parser.getObjects().toArray(new DataObject[parser.getObjects().size()]));
+			xfduManifest.setDataObjects(parser.getObjects());
 			xfduManifest.setSurface(parser.getSurface());
 			xfduManifest.setPacketCount(parser.getProductInformation("packetCount"));
 			xfduManifest.setCycle(parser.getCycleNumber());
@@ -39,6 +41,17 @@ public class ModelCreator {
 		
 		
 		return xfduManifest;
+		
+	}
+	
+	public static Adf createAdf(String fileName, List<DataObject> filesList){
+		
+		Adf adf = new Adf();
+		adf = (Adf) FileNameReader.nameReader(fileName);
+		
+		adf.setDataObjects(filesList);
+		
+		return adf;
 		
 	}
 

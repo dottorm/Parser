@@ -13,9 +13,12 @@ import com.telespazio.vega.Parser.core.ManifestParser;
 import com.telespazio.vega.Parser.core.ModelCreator;
 import com.telespazio.vega.Parser.core.RegexMap;
 
+import model.Adf;
 import model.DataObject;
+import model.XfduManifest;
 import utils.CheckName;
 import utils.FileNameUtils;
+import utils.ObjectsUtils;
 import utils.PropertiesEnu;
 import utils.PropertiesManager;
 
@@ -36,34 +39,36 @@ public class Engine {
 		String type;
 		String pattern;
 		
+		String dirName;
+		
 		for(File dir : inputFolder){
 			
 			if(!dir.isDirectory()){
 				System.out.println("Input is not a directory");
-				return;
+				continue;
+			}
+			dirName = dir.getName();
+			if (!FileNameUtils.isValid(dirName)){
+				System.out.println("Input not correct: "+dirName);
+				continue;
 			}
 			
-			if (!FileNameUtils.isValid(dir.getName())){
-				System.out.println("Input not correct: "+dir.getName());
-				return;
-			}
-			
-			type = FileNameReader.getType(dir.getName());
+			type = FileNameReader.getType(dirName);
 			pattern = RegexMap.REGEX.get(type);
 			
-			if(!CheckName.chekName(dir.getName(), pattern)){
+			if(!CheckName.chekName(dirName, pattern)){
 				System.out.println("File Name not compliant");
-				return;
+				continue;
 			}
 			
-			System.out.println(FileNameReader.nameReader(dir.getName()));
+			System.out.println(FileNameReader.nameReader(dirName));
 			
-			System.out.println("Checking: "+dir.getName());
+			System.out.println("Checking: "+dirName);
 			try {
 				dir = FileNameUtils.renameFile(dir);
 				if(dir == null){
 					System.out.println("Impossible to rename directory");
-					return;
+					continue;
 				}
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
@@ -74,7 +79,7 @@ public class Engine {
 			
 			if(manifest == null){
 				System.out.println("Product Not valid no Manifest to Parse");
-				return;
+				continue;
 			}
 			ManifestParser man = null;
 			try {
@@ -92,20 +97,24 @@ public class Engine {
 			
 			if(objectList == null || objectList.size() == 0){
 				System.out.println("Object List null");
-				return;
+				continue;
 			}
 			
-			File[] filesList = reader.readDataObject(dir, objectList);
+			List<DataObject> filesList = reader.readDataObject(dir, objectList);
 			
-			if(filesList == null || filesList.length == 0){
+			if(filesList == null || filesList.size() == 0){
 				System.out.println("Empty dir impossible to elaborate");
-				return;
+				continue;
 			}
 			
 			System.out.println(Analyzer.checkDataObjects(filesList,objectList));
 			
+			XfduManifest xfduMan = ModelCreator.createManifest(manifest);
+			Adf adf = ModelCreator.createAdf(dirName,filesList);
 			
-			System.out.println(ModelCreator.createManifest(manifest).toString());
+			System.out.println(xfduMan.toString());
+			System.out.println(adf.toString() +" - "+ adf.getDataObjects().size());
+			System.out.println(ObjectsUtils.compareObjects(adf, xfduMan));
 			
 		}
 	}
